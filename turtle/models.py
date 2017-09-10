@@ -16,11 +16,23 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from turtle import app
+import uuid
+import datetime
 
-# 开启调试模式
-app.config.update(DEBUG=True)
+from turtle import db
 
 
-if __name__ == '__main__':
-    app.run()
+class NewsSpiderItem(db.Document):
+    """ 新闻爬虫文档"""
+    uuid = db.StringField(unique=True, default=str(uuid.uuid4()))
+    url = db.StringField(required=True)
+    title = db.StringField(required=True)
+    content = db.StringField()
+    pic_link = db.StringField()
+    create_time = db.DateTime(default=datetime.datetime.now)
+    flag = db.IntField(default=1)
+    remark = db.IntField(default=1)
+
+    meta = {
+        'collection': 'baidu_news'
+    }

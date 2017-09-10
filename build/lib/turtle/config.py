@@ -16,11 +16,43 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from turtle import app
-
-# 开启调试模式
-app.config.update(DEBUG=True)
+import os
 
 
-if __name__ == '__main__':
-    app.run()
+class Config:
+    def __init__(self):
+        pass
+
+
+class DevelopmentConfig(Config):
+    mongo_cnf = {
+        'HOST': 'localhost',
+        'PORT': 27017,
+        'DB': 'news'
+    }
+
+
+class TestingConfig(Config):
+    mongo_cnf = {
+        'HOST': 'localhost',
+        'PORT': 37017,
+        'DB': 'news'
+    }
+
+
+class ProductionConfig(Config):
+    mongo_cnf = {
+        'HOST': 'localhost',
+        'PORT': 37017,
+        'DB': 'news'
+    }
+
+
+config_setting = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig
+}
+
+config = config_setting.get(os.getenv('ENVIRONMENT'), DevelopmentConfig)
+
